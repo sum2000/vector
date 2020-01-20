@@ -1,0 +1,97 @@
+[sinks.gcp_stackdriver_logging]
+title = "GCP Stackdriver Logging"
+batch_max_size = 5242880
+batch_timeout_secs = 1
+beta = true
+buffer = true
+common = true
+delivery_guarantee = "best_effort"
+function_category = "transmit"
+healthcheck = true
+egress_method = "batching"
+input_types = ["log"]
+request_rate_limit_duration_secs = 1
+request_rate_limit_num = 100
+request_retry_attempts = 9223372036854775807
+request_retry_initial_backoff_secs = 1
+request_retry_max_duration_secs = 10
+request_in_flight_limit = 5
+request_timeout_secs = 60
+service_providers = ["Google"]
+write_to_description = "[Google Cloud Platform's Stackdriver Logging service][urls.gcp_stackdriver_logging] via the [REST Interface][urls.gcp_stackdriver_logging_rest]"
+tls_options = []
+
+[sinks.gcp_stackdriver_logging.options.credentials_path]
+type = "string"
+required = true
+description = """\
+The filename for a Google Cloud service account credentials JSON file \
+used to authenticate access to the stackdriver logging API. \
+"""
+
+[sinks.gcp_stackdriver_logging.options.project_id]
+type = "string"
+common = false
+required = true
+examples = ["vector-123456"]
+description = "The project name to which to publish logs."
+
+[sinks.gcp_stackdriver_logging.options.billing_account_id]
+type = "string"
+common = false
+examples = ["vector-123456"]
+description = """\
+The billing account ID to which to publish logs.
+Exactly one of `billing_account_id`, `folder_id`, `log_id`, or `organization_id` must be set.\
+"""
+
+[sinks.gcp_stackdriver_logging.options.folder_id]
+type = "string"
+common = false
+examples = ["vector-123456"]
+description = """\
+The folder ID to which to publish logs.
+Exactly one of `billing_account_id`, `folder_id`, `log_id`, or `organization_id` must be set.\
+"""
+
+[sinks.gcp_stackdriver_logging.options.log_id]
+type = "string"
+common = false
+examples = ["vector-123456"]
+description = """\
+The log ID to which to publish logs.
+Exactly one of `billing_account_id`, `folder_id`, `log_id`, or `organization_id` must be set.\
+"""
+
+[sinks.gcp_stackdriver_logging.options.organization_id]
+type = "string"
+common = false
+examples = ["vector-123456"]
+description = """\
+The organization ID to which to publish logs.
+Exactly one of `billing_account_id`, `folder_id`, `log_id`, or `organization_id` must be set.\
+"""
+
+[sinks.gcp_stackdriver_logging.options.resource]
+type = "table"
+description = "Options for describing the logging resource."
+
+[sinks.gcp_stackdriver_logging.options.resource.options.type]
+type = "string"
+required = "true"
+examples = ["global", "gce_instance"]
+description = """\
+The monitored resource type. \
+For example, the type of a Compute Engine VM instance is gce_instance.\
+"""
+
+[sinks.gcp_stackdriver_logging.options.resource.options."`[label]`"]
+type = "string"
+examples = [
+  {projectId = "vector-123456"},
+  {zone = "Twilight"},
+]
+description = """\
+Values for all of the labels listed in the associated monitored resource descriptor. \
+For example, Compute Engine VM instances use the labels "projectId", "instanceId", and "zone".\
+"""
